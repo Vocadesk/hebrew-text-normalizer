@@ -1,0 +1,21 @@
+# Tests (replaces .github/workflows/test.yml, 27 Oct 2026): every branch push, including main,
+# and pull requests. Same commands and Node version (22) as the workflow. This library is not
+# published or deployed by CI.
+steps:
+  - id: install
+    name: node:22
+    entrypoint: npm
+    args: ['ci']
+  - id: typecheck
+    name: node:22
+    entrypoint: npx
+    args: ['tsc', '--noEmit']
+    waitFor: ['install']
+  - id: test
+    name: node:22
+    entrypoint: npm
+    args: ['test']
+    waitFor: ['install']
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 900s
